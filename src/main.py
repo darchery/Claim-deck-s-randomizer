@@ -14,7 +14,7 @@ nonPairedFactionsClaimV = ["Automatons", "Bards", "Racoons", "Vikings", "Griffin
 # Expansions
 
 # Terror
-pairedFactionsTerror = "EMPTY"
+# pairedFactionsTerror = "EMPTY"
 nonPairedFactionsTerror = ["Shadows", "Vampires", "Werewolves", "Zombies"]
 
 # Ice
@@ -30,11 +30,11 @@ pairedFactionsMercenaries = "Orcs, Elves and Elves and Orcs"
 nonPairedFactionsMercenaries = "Cyclops"
 
 # Magic
-pairedFactionsMagic = "EMPTY"
+# pairedFactionsMagic = "EMPTY"
 nonPairedFactionsMagic = ["Druids", "Shape shifters", "Wizards"]
 
 # Fire
-pairedFactionsFire = "EMPTY"
+# pairedFactionsFire = "EMPTY"
 nonPairedFactionsFire = ["Demons", "Fire elementals", "Poisoners", "Tricksters"]
 
 # To add -> Alliances, Sky, Sun and Sea
@@ -67,118 +67,154 @@ def addAnExpansion(inputAdd):
     match inputAdd:
         case "Claim I":
             globalListOfPairedFactions.append(pairedFactionsClaimI)
-            globalListOfNonPairedFactions.append(nonPairedFactionsClaimI)
+            # Can use extend
+            # globalListOfNonPairedFactions.extend(nonPairedFactionsClaimI)
+            # But in this case we are using for to have more control
+            for faction in nonPairedFactionsClaimI:
+                globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
         case "Claim II":
             globalListOfPairedFactions.append(pairedFactionsClaimII)
-            globalListOfNonPairedFactions.append(nonPairedFactionsClaimII)
+            for faction in nonPairedFactionsClaimI:
+                globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
         case "Claim V":
             globalListOfPairedFactions.append(pairedFactionsClaimV)
-            globalListOfNonPairedFactions.append(nonPairedFactionsClaimV)
+            for faction in nonPairedFactionsClaimV:
+                globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
         case "Terror":
-            globalListOfPairedFactions.append(pairedFactionsTerror)
-            globalListOfNonPairedFactions.append(nonPairedFactionsTerror)
+            # Terror doesn't have paired factions to add
+            #globalListOfPairedFactions.append(pairedFactionsTerror)
+            for faction in nonPairedFactionsTerror:
+                globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
         case "Ice":
             globalListOfPairedFactions.append(pairedFactionsIce)
-            globalListOfNonPairedFactions.append(nonPairedFactionsIce)
+            for faction in nonPairedFactionsIce:
+                globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
         case "Maps":
             globalListOfPairedFactions.append(pairedFactionsMaps)
-            globalListOfNonPairedFactions.append(nonPairedFactionsMaps)
+            for faction in nonPairedFactionsMaps:
+                globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
         case "Mercenaries":
             globalListOfPairedFactions.append(pairedFactionsMercenaries)
-            globalListOfNonPairedFactions.append(nonPairedFactionsMercenaries)
+            for faction in nonPairedFactionsMercenaries:
+                globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
         case "Magic":
-            globalListOfPairedFactions.append(pairedFactionsMagic)
-            globalListOfNonPairedFactions.append(nonPairedFactionsMagic)
+            # Magic doesn't have paired factions to add
+            #globalListOfPairedFactions.append(pairedFactionsMagic)
+            for faction in nonPairedFactionsMagic:
+                globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
         # Fire
         case _:
-            globalListOfPairedFactions.append(pairedFactionsFire)
-            globalListOfNonPairedFactions.append(nonPairedFactionsFire)
+            # Fire doesn't have paired factions to add
+            #globalListOfPairedFactions.append(pairedFactionsFire)
+            for faction in nonPairedFactionsFire:
+                globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
 
-def removeAnExpansion(inputDelete, globalListOfPairedFactions=globalListOfPairedFactions,
-                      globalListOfNonPairedFactions=globalListOfNonPairedFactions):
+def removeAnExpansion(inputDelete, globalListOfPairedFactions, globalListOfNonPairedFactions):
     match inputDelete:
         case "Claim I":
-            # If the elements from our global list are not in the paired factions of Claim I, then we add it to our global list
-            # we are removing from the global lists the factions from Claim I
-            # Do the substraction between these 2 sets
-            globalListOfPairedFactions = [x for x in globalListOfPairedFactions if x not in pairedFactionsClaimI]
-            globalListOfNonPairedFactions = [x for x in globalListOfNonPairedFactions if x not in nonPairedFactionsClaimI]
+            # Remove from paired global list
+            globalListOfPairedFactions.remove(pairedFactionsClaimI)
+            # Remove from non-paired global list
+            # For every non-paried faction from Claim I
+            for faction in nonPairedFactionsClaimI:
+                # If it's in on the nonPairedFactions global list, then remove it
+                if faction in globalListOfNonPairedFactions:
+                    globalListOfNonPairedFactions.remove(faction)
 
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
         case "Claim II":
-            globalListOfPairedFactions = [x for x in globalListOfPairedFactions if x not in pairedFactionsClaimII]
-            globalListOfNonPairedFactions = [x for x in globalListOfNonPairedFactions if x not in nonPairedFactionsClaimII]
+            globalListOfPairedFactions.remove(pairedFactionsClaimII)
+            for faction in nonPairedFactionsClaimII:
+                if faction in globalListOfNonPairedFactions:
+                    globalListOfNonPairedFactions.remove(faction)
 
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
         case "Claim V":
-            globalListOfPairedFactions = [x for x in globalListOfPairedFactions if x not in pairedFactionsClaimV]
-            globalListOfNonPairedFactions = [x for x in globalListOfNonPairedFactions if x not in nonPairedFactionsClaimV]
+            globalListOfPairedFactions.remove(pairedFactionsClaimV)
+            for faction in nonPairedFactionsClaimV:
+                if faction in globalListOfNonPairedFactions:
+                    globalListOfNonPairedFactions.remove(faction)
 
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
         case "Terror":
-            globalListOfPairedFactions = [x for x in globalListOfPairedFactions if x not in pairedFactionsTerror]
-            globalListOfNonPairedFactions = [x for x in globalListOfNonPairedFactions if x not in nonPairedFactionsTerror]
+            # Terror doesn't have paired factions to remove
+            #globalListOfPairedFactions.remove(pairedFactionsTerror)
+            for faction in nonPairedFactionsTerror:
+                if faction in globalListOfNonPairedFactions:
+                    globalListOfNonPairedFactions.remove(faction)
 
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
         case "Ice":
-            globalListOfPairedFactions = [x for x in globalListOfPairedFactions if x not in pairedFactionsIce]
-            globalListOfNonPairedFactions = [x for x in globalListOfNonPairedFactions if x not in nonPairedFactionsIce]
+            globalListOfPairedFactions.remove(pairedFactionsIce)
+            for faction in nonPairedFactionsIce:
+                if faction in globalListOfNonPairedFactions:
+                    globalListOfNonPairedFactions.remove(faction)
 
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
         case "Maps":
-            globalListOfPairedFactions = [x for x in globalListOfPairedFactions if x not in pairedFactionsMaps]
-            globalListOfNonPairedFactions = [x for x in globalListOfNonPairedFactions if x not in nonPairedFactionsMaps]
+            globalListOfPairedFactions.remove(pairedFactionsMaps)
+            for faction in nonPairedFactionsMaps:
+                if faction in globalListOfNonPairedFactions:
+                    globalListOfNonPairedFactions.remove(faction)
 
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
         case "Mercenaries":
-            globalListOfPairedFactions = [x for x in globalListOfPairedFactions if x not in pairedFactionsMercenaries]
-            globalListOfNonPairedFactions = [x for x in globalListOfNonPairedFactions if x not in nonPairedFactionsMercenaries]
+            globalListOfPairedFactions.remove(pairedFactionsMercenaries)
+            for faction in nonPairedFactionsMercenaries:
+                if faction in globalListOfNonPairedFactions:
+                    globalListOfNonPairedFactions.remove(faction)
 
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
         case "Magic":
-            globalListOfPairedFactions = [x for x in globalListOfPairedFactions if x not in pairedFactionsMagic]
-            globalListOfNonPairedFactions = [x for x in globalListOfNonPairedFactions if x not in nonPairedFactionsMagic]
+            # Maic doesn't have paired factions to delete
+            #globalListOfPairedFactions.remove(pairedFactionsMagic)
+            for faction in nonPairedFactionsMagic:
+                if faction in globalListOfNonPairedFactions:
+                    globalListOfNonPairedFactions.remove(faction)
 
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
         # Fire
         case _:
-            globalListOfPairedFactions = [x for x in globalListOfPairedFactions if x not in pairedFactionsFire]
-            globalListOfNonPairedFactions = [x for x in globalListOfNonPairedFactions if x not in nonPairedFactionsFire]
+            # Fire doesn't have paired factions
+            #globalListOfPairedFactions.remove(pairedFactionsFire)
+            for faction in nonPairedFactionsFire:
+                if faction in globalListOfNonPairedFactions:
+                    globalListOfNonPairedFactions.remove(faction)
 
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
@@ -206,17 +242,28 @@ print("Hello, welcome to Claim deck generator...")
 printSpace()
 printGeneralOptions()
 
+
+
 # Get the option from the input
 option = int(input("Select an option: "))
 printSpace()
+
+# Test if the user's input is available
+if option == 1 and not globalListOfPairedFactions:
+    print("Please add any expansion with paired factions to play...")
 while option not in [1, 2, 3]:
     option = int(input("Wrong option, please enter 1,2 or 3: "))
+
+# CREATE A NEW OPTION TO SEE OUR ACTUALS EXPANSIONS, 3. Show expansions, 4. Exit
+# Possible 2 new OPTIONS, clean expansions and add all expansions
 
 # While the user doesn't quit
 while option != 3:
 
     # Get a random deck
-    if option == 1:
+    if option == 1 and not globalListOfPairedFactions:
+        print("Please add any expansion with paired factions to play...")
+    if option == 1 and globalListOfPairedFactions:
         numberOfPlayers = int(input("How many players are going to play? "))
 
         # Test if the user's input is available
@@ -228,10 +275,10 @@ while option != 3:
 
         if numberOfPlayers == 2:
             print(
-                "You will have to prepare a deck with 2 paired faction(for example goblins and knights) and add 3 not paired factions")
+                "You will have to prepare a deck with 2 paired factions(for example goblins and knights) and add 3 not paired factions")
         else:
             print(
-                "You will have to prepare a deck with 2 paired faction(for example goblins and knights) and add 5 not paired factions")
+                "You will have to prepare a deck with 2 paired factions(for example goblins and knights) and add 5 not paired factions")
             numbersOfFactions = 5
         # TO COMPLETE
 
@@ -284,8 +331,10 @@ while option != 3:
                         inputDelete = input("Wrong input, type an added expansion: ")
 
                     # Remove the expansion
-                    removeAnExpansion(inputDelete)
+                    removeAnExpansion(inputDelete, globalListOfPairedFactions, globalListOfNonPairedFactions)
                     print(f" {inputDelete} was succesfully removed...")
+                    print(globalListOfPairedFactions)
+                    print(globalListOfNonPairedFactions)
 
             # Repeat the add/delete options
             printSpace()
