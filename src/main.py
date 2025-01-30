@@ -42,19 +42,17 @@ nonPairedFactionsFire = ["Demons", "Fire elementals", "Poisoners", "Tricksters"]
 
 # To add -> Alliances, Sky, Sun and Sea
 
-# List with the factions
-globalListOfPairedFactions = []
-globalListOfNonPairedFactions = []
-
-
 # Constants and global variables
 SELECT_OPTION_MESSAGE = "Select an option: "
 WRONG_OPTION_MESSAGE = "Wrong option, please enter 1,2 or 3: "
 
+# List with the factions
+globalListOfPairedFactions = []
+globalListOfNonPairedFactions = []
+
 # List to control the added expansions
 expansionsNotAdded = ["Claim I", "Claim II", "Claim V", "Terror", "Ice", "Maps", "Mercenaries", "Magic", "Fire"]
 expansionsAdded = []
-
 
 # Definition of methods
 def printSpace():
@@ -63,7 +61,7 @@ def printSpace():
 def printGeneralOptions():
     print("Available menu options: ")
     print("1. Generate a random deck\n")
-    print("2. Organise your actuals expansions\n")
+    print("2. Organise your actual expansions\n")
     print("3. Show your selected expansions\n")
     print("4. Exit\n")
 
@@ -71,7 +69,9 @@ def printAddDeleteOptions():
     print("Organisation options: ")
     print("1. Add an expansion\n")
     print("2. Remove an expansion\n")
-    print("3. Back\n")
+    print("3. Clean all the expansions selected\n")
+    print("4. Add all the available expansions\n")
+    print("5. Back\n")
 
 def showExpansionsAndFactions():
     global expansion
@@ -88,6 +88,55 @@ def showExpansionsAndFactions():
         for index, faction in enumerate(globalListOfNonPairedFactions, start=1):
             print(f" {index}. {faction}")
 
+def cleanPool():
+    global globalListOfPairedFactions, globalListOfNonPairedFactions, expansionsNotAdded, expansionsAdded
+    # Set to empty the global lists
+    globalListOfPairedFactions = []
+    globalListOfNonPairedFactions = []
+    # Reset the expansions lists, refill the not added list and set to empty de added list
+    expansionsNotAdded = ["Claim I", "Claim II", "Claim V", "Terror", "Ice", "Maps", "Mercenaries", "Magic", "Fire"]
+    expansionsAdded = []
+
+def addAllExpansionsToPool():
+    global expansionsNotAdded, expansionsAdded
+    # Clean the previous content
+    cleanPool()
+    # Refill both lists
+    addEveryFaction()
+    # Reset the expansions lists, refill the not added list and set to empty de added list
+    expansionsNotAdded = []
+    expansionsAdded = ["Claim I", "Claim II", "Claim V", "Terror", "Ice", "Maps", "Mercenaries", "Magic", "Fire"]
+    print("All expansions were added...")
+
+
+def addEveryFaction():
+    addAnExpansion("Claim I")
+    addAnExpansion("Claim II")
+    addAnExpansion("Claim V")
+    addAnExpansion("Terror")
+    addAnExpansion("Ice")
+    addAnExpansion("Mercenaries")
+    addAnExpansion("Maps")
+    addAnExpansion("Magic")
+    addAnExpansion("Fire")
+
+def printLogo():
+    print(r""" 
+   _____   _                   _____   __  __        _____    ______    _____   _  __
+  / ____| | |          /\     |_   _| |  \/  |      |  __ \  |  ____|  / ____| | |/ /
+ | |      | |         /  \      | |   | \  / |      | |  | | | |__    | |      | ' / 
+ | |      | |        / /\ \     | |   | |\/| |      | |  | | |  __|   | |      |  <  
+ | |____  | |____   / ____ \   _| |_  | |  | |      | |__| | | |____  | |____  | . \ 
+  \_____| |______| /_/    \_\ |_____| |_|  |_|      |_____/  |______|  \_____| |_|\_\ 
+
+   _____   ______   _   _   ______   _____               _______    ____    _____  
+  / ____| |  ____| | \ | | |  ____| |  __ \      /\     |__   __|  / __ \  |  __ \ 
+ | |  __  | |__    |  \| | | |__    | |__) |    /  \       | |    | |  | | | |__) |
+ | | |_ | |  __|   | . ` | |  __|   |  _  /    / /\ \      | |    | |  | | |  _  / 
+ | |__| | | |____  | |\  | | |____  | | \ \   / ____ \     | |    | |__| | | | \ \ 
+  \_____| |______| |_| \_| |______| |_|  \_\ /_/    \_\    |_|     \____/  |_|  \_\
+  """)
+
 def addAnExpansion(inputAdd):
     match inputAdd:
         case "Claim I":
@@ -102,7 +151,7 @@ def addAnExpansion(inputAdd):
             expansionsAdded.append(inputAdd)
         case "Claim II":
             globalListOfPairedFactions.append(pairedFactionsClaimII)
-            for faction in nonPairedFactionsClaimI:
+            for faction in nonPairedFactionsClaimII:
                 globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
@@ -131,15 +180,15 @@ def addAnExpansion(inputAdd):
             expansionsAdded.append(inputAdd)
         case "Maps":
             globalListOfPairedFactions.append(pairedFactionsMaps)
-            for faction in nonPairedFactionsMaps:
-                globalListOfNonPairedFactions.append(faction)
+            # Maps only have on non-paired faction
+            globalListOfNonPairedFactions.append(nonPairedFactionsMaps)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
         case "Mercenaries":
             globalListOfPairedFactions.append(pairedFactionsMercenaries)
-            for faction in nonPairedFactionsMercenaries:
-                globalListOfNonPairedFactions.append(faction)
+            # Mercenaries only have on non-paired faction
+            globalListOfNonPairedFactions.append(nonPairedFactionsMercenaries)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
@@ -161,7 +210,8 @@ def addAnExpansion(inputAdd):
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
 
-def removeAnExpansion(inputDelete, globalListOfPairedFactions, globalListOfNonPairedFactions):
+def removeAnExpansion(inputDelete):
+    global globalListOfPairedFactions, globalListOfNonPairedFactions
     match inputDelete:
         case "Claim I":
             # Remove from paired global list
@@ -244,22 +294,8 @@ def removeAnExpansion(inputDelete, globalListOfPairedFactions, globalListOfNonPa
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
 
-# Print the title
-print(r""" 
-   _____   _                   _____   __  __        _____    ______    _____   _  __
-  / ____| | |          /\     |_   _| |  \/  |      |  __ \  |  ____|  / ____| | |/ /
- | |      | |         /  \      | |   | \  / |      | |  | | | |__    | |      | ' / 
- | |      | |        / /\ \     | |   | |\/| |      | |  | | |  __|   | |      |  <  
- | |____  | |____   / ____ \   _| |_  | |  | |      | |__| | | |____  | |____  | . \ 
-  \_____| |______| /_/    \_\ |_____| |_|  |_|      |_____/  |______|  \_____| |_|\_\ 
-  
-   _____   ______   _   _   ______   _____               _______    ____    _____  
-  / ____| |  ____| | \ | | |  ____| |  __ \      /\     |__   __|  / __ \  |  __ \ 
- | |  __  | |__    |  \| | | |__    | |__) |    /  \       | |    | |  | | | |__) |
- | | |_ | |  __|   | . ` | |  __|   |  _  /    / /\ \      | |    | |  | | |  _  / 
- | |__| | | |____  | |\  | | |____  | | \ \   / ____ \     | |    | |__| | | | \ \ 
-  \_____| |______| |_| \_| |______| |_|  \_\ /_/    \_\    |_|     \____/  |_|  \_\
-  """)
+# Print the logo
+printLogo()
 
 # Welcome and show the options
 printSpace()
@@ -273,8 +309,6 @@ option = int(input(SELECT_OPTION_MESSAGE))
 # Test if the user's input is available
 while option not in [1, 2, 3, 4]:
     option = int(input(WRONG_OPTION_MESSAGE))
-
-# Possible 2 new OPTIONS, clean expansions and add all expansions
 
 # While the user doesn't quit(4)
 while option != 4:
@@ -324,10 +358,10 @@ while option != 4:
         optionAddDelete = int(input(SELECT_OPTION_MESSAGE))
 
         # Test if the user's input is available
-        while optionAddDelete not in [1, 2, 3]:
+        while optionAddDelete not in [1, 2, 3, 4, 5]:
             optionAddDelete = int(input(WRONG_OPTION_MESSAGE))
 
-        while optionAddDelete != 3:
+        while optionAddDelete != 5:
 
             # Add an expansion
             if optionAddDelete == 1:
@@ -348,8 +382,6 @@ while option != 4:
                     # Add the expansion
                     addAnExpansion(inputAdd)
                     print(f" {inputAdd} was succesfully added...")
-                    print(globalListOfPairedFactions)
-                    print(globalListOfNonPairedFactions)
 
             # Delete an expansion
             elif optionAddDelete == 2:
@@ -368,10 +400,17 @@ while option != 4:
                         inputDelete = input("Wrong input, type an added expansion: ")
 
                     # Remove the expansion
-                    removeAnExpansion(inputDelete, globalListOfPairedFactions, globalListOfNonPairedFactions)
+                    removeAnExpansion(inputDelete)
                     print(f" {inputDelete} was succesfully removed...")
-                    print(globalListOfPairedFactions)
-                    print(globalListOfNonPairedFactions)
+
+            # Clean all the expansions selected
+            elif optionAddDelete == 3:
+                cleanPool()
+                print("Now the deck pool it's empty...")
+
+            # Add all the available expansions
+            elif optionAddDelete == 4:
+                addAllExpansionsToPool()
 
             # Repeat the add/delete options
             printSpace()
@@ -379,7 +418,7 @@ while option != 4:
             optionAddDelete = int(input(SELECT_OPTION_MESSAGE))
 
         # Test if the user's input is available
-        while optionAddDelete not in [1, 2, 3]:
+        while optionAddDelete not in [1, 2, 3, 4, 5]:
             optionAddDelete = int(input(WRONG_OPTION_MESSAGE))
 
     # Show the actual expansions added to your deck
