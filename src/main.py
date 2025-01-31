@@ -16,14 +16,13 @@ pairedFactionsClaimV = "Royalty and Peasants"
 nonPairedFactionsClaimV = ["Automatons", "Bards", "Racoons", "Vikings", "Griffins"]
 
 # Expansions
-
 # Terror
 # pairedFactionsTerror = "EMPTY"
-nonPairedFactionsTerror = ["Shadows", "Vampires", "Werewolves", "Zombies"]
+nonPairedFactionsFear = ["Shadows", "Vampires", "Werewolves", "Zombies"]
 
 # Ice
-pairedFactionsIce = "Ice Queen and King"
-nonPairedFactionsIce = ["Yetis", "Ice Beasts"]
+pairedFactionsFrost = "Ice Queen and King"
+nonPairedFactionsFrost = ["Yetis", "Ice Beasts"]
 
 # Maps
 pairedFactionsMaps = "Basilisks and Unicorns"
@@ -46,13 +45,22 @@ nonPairedFactionsFire = ["Demons", "Fire elementals", "Poisoners", "Tricksters"]
 # Constants and global variables
 SELECT_OPTION_MESSAGE = "Select an option: "
 WRONG_OPTION_MESSAGE = "Wrong option, please enter 1, 2, 3 or 4: "
+FIRE = "Fire"
+MAGIC = "Magic"
+MERCENARIES = "Mercenaries"
+MAPS = "Maps"
+FROST = "Frost"
+FEAR = "Fear"
+CLAIM_V = "Claim V"
+CLAIM_II = "Claim II"
+CLAIM_I = "Claim I"
 
 # List with the factions
 globalListOfPairedFactions = []
 globalListOfNonPairedFactions = []
 
 # List to control the added expansions
-expansionsNotAdded = ["Claim I", "Claim II", "Claim V", "Terror", "Ice", "Maps", "Mercenaries", "Magic", "Fire"]
+expansionsNotAdded = [CLAIM_I, CLAIM_II, CLAIM_V, FEAR, FROST, MAPS, MERCENARIES, MAGIC, FIRE]
 expansionsAdded = []
 
 # Definition of methods
@@ -96,7 +104,7 @@ def cleanPool():
     globalListOfPairedFactions = []
     globalListOfNonPairedFactions = []
     # Reset the expansions lists, refill the not added list and set to empty de added list
-    expansionsNotAdded = ["Claim I", "Claim II", "Claim V", "Terror", "Ice", "Maps", "Mercenaries", "Magic", "Fire"]
+    expansionsNotAdded = [CLAIM_I, CLAIM_II, CLAIM_V, FEAR, FROST, MAPS, MERCENARIES, MAGIC, FIRE]
     expansionsAdded = []
 
 def addAllExpansionsToPool():
@@ -107,20 +115,134 @@ def addAllExpansionsToPool():
     addEveryFaction()
     # Reset the expansions lists, refill the not added list and set to empty de added list
     expansionsNotAdded = []
-    expansionsAdded = ["Claim I", "Claim II", "Claim V", "Terror", "Ice", "Maps", "Mercenaries", "Magic", "Fire"]
+    expansionsAdded = [CLAIM_I, CLAIM_II, CLAIM_V, FEAR, FROST, MAPS, MERCENARIES, MAGIC, FIRE]
     print("All expansions were added...")
 
 
 def addEveryFaction():
-    addAnExpansion("Claim I")
-    addAnExpansion("Claim II")
-    addAnExpansion("Claim V")
-    addAnExpansion("Terror")
-    addAnExpansion("Ice")
-    addAnExpansion("Mercenaries")
-    addAnExpansion("Maps")
-    addAnExpansion("Magic")
-    addAnExpansion("Fire")
+    addAnExpansion(CLAIM_I)
+    addAnExpansion(CLAIM_II)
+    addAnExpansion(CLAIM_V)
+    addAnExpansion(FEAR)
+    addAnExpansion(FROST)
+    addAnExpansion(MERCENARIES)
+    addAnExpansion(MAPS)
+    addAnExpansion(MAGIC)
+    addAnExpansion(FIRE)
+
+def deploySelectOptionsAndTakeInput():
+    global option, wrong
+    printGeneralOptions()
+    option = input(SELECT_OPTION_MESSAGE)
+    printSpace()
+    # Test if the user's input is available
+    wrong = False
+    while option not in ["1", "2", "3", "4"]:
+        option = input(WRONG_OPTION_MESSAGE)
+        wrong = True
+    # If the option was valid, then convert it to int
+    option = int(option)
+    if wrong:
+        printSpace()
+
+def delployAddDeleteOptionsAndTakeInput():
+    global optionAddDelete, wrong
+    printAddDeleteOptions()
+    optionAddDelete = input(SELECT_OPTION_MESSAGE)
+    printSpace()
+    # Test if the user's input is available
+    wrong = False
+    while optionAddDelete not in ["1", "2", "3", "4", "5"]:
+        optionAddDelete = input("Wrong option, please enter 1, 2, 3, 4 or 5: ")
+        wrong = True
+    # If the input was valid, then convert it to int
+    optionAddDelete = int(optionAddDelete)
+    if wrong:
+        printSpace()
+
+def takeNumberOfPlayersInput():
+    global numberOfPlayers, wrong
+    numberOfPlayers = input("How many players are going to play? ")
+    printSpace()
+    # Test if the user's input is available
+    wrong = False
+    while numberOfPlayers not in ["2", "3", "4"]:
+        numberOfPlayers = input("Wrong number of players, please enter 2, 3 or 4: ")
+        wrong = True
+    # If the numberOfPlayers were valid, then convert it to int
+    numberOfPlayers = int(numberOfPlayers)
+    if wrong:
+        printSpace()
+
+def generateRandomDeck():
+    # We are going to select 2 paired factions
+    random.shuffle(globalListOfPairedFactions)
+    pairedGenerated = random.choice(globalListOfPairedFactions)
+    # Then we are going to select 3 or 5 non-paired factions to build our deck
+    random.shuffle(globalListOfNonPairedFactions)
+    nonPairedGenerated = random.sample(globalListOfNonPairedFactions, numbersOfFactions)
+    print(f"Your randomly generated deck for {numberOfPlayers} players is composed by: ")
+    print(f"- {pairedGenerated}")
+    if len(nonPairedGenerated) > 1:
+        print("- " + ", ".join(nonPairedGenerated[:-1]) + " and " + nonPairedGenerated[-1])
+    else:
+        print(nonPairedGenerated[0])
+    printSpace()
+
+def addExpansionInput():
+    global expansion, wrong
+    # The List.isEmpty of python
+    if not expansionsNotAdded:
+        print("All expansions were already added")
+    else:
+        print("Available expansions: ")
+        for expansion in expansionsNotAdded:
+            print(f"- {expansion}")
+        inputAdd = input("Type the name: ")
+        printSpace()
+
+        wrong = False
+        while inputAdd not in expansionsNotAdded:
+            inputAdd = input("Wrong input, type an available expansion: ")
+            wrong = True
+        if wrong:
+            printSpace()
+
+        # Add the expansion
+        addAnExpansion(inputAdd)
+        print(f"{inputAdd} was successfully added...")
+
+
+def removeExpansionInput():
+    global expansion
+    # The List.isEmpty of python
+    if not expansionsAdded:
+        print("You didn't added any faction")
+    else:
+        print("Actual expansions: ")
+        for expansion in expansionsAdded:
+            print(f"- {expansion}")
+        inputDelete = input("Type the name: ")
+        printSpace()
+
+        while inputDelete not in expansionsAdded:
+            inputDelete = input("Wrong input, type an added expansion: ")
+
+        # Remove the expansion
+        removeAnExpansion(inputDelete)
+        print(f"{inputDelete} was successfully removed...")
+
+def chooseNumberOfFactions():
+    global numbersOfFactions
+    numbersOfFactions = 3
+    if numberOfPlayers == 2:
+        print(
+            "You will have to prepare a deck with 2 paired factions and add 3 not paired factions, in total 5 factions")
+    else:
+        print(
+            "You will have to prepare a deck with 2 paired factions and add 5 not paired factions, in total 7 factions")
+        numbersOfFactions = 5
+
 
 def printLogo():
     print(r""" 
@@ -165,17 +287,17 @@ def addAnExpansion(inputAdd):
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
-        case "Terror":
-            # Terror doesn't have paired factions to add
-            #globalListOfPairedFactions.append(pairedFactionsTerror)
-            for faction in nonPairedFactionsTerror:
+        case "Fear":
+            # Fear doesn't have paired factions to add
+            #globalListOfPairedFactions.append(pairedFactionsFear)
+            for faction in nonPairedFactionsFear:
                 globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
             expansionsAdded.append(inputAdd)
-        case "Ice":
-            globalListOfPairedFactions.append(pairedFactionsIce)
-            for faction in nonPairedFactionsIce:
+        case "Frost":
+            globalListOfPairedFactions.append(pairedFactionsFrost)
+            for faction in nonPairedFactionsFrost:
                 globalListOfNonPairedFactions.append(faction)
 
             expansionsNotAdded.remove(inputAdd)
@@ -243,18 +365,18 @@ def removeAnExpansion(inputDelete):
 
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
-        case "Terror":
-            # Terror doesn't have paired factions to remove
-            #globalListOfPairedFactions.remove(pairedFactionsTerror)
-            for faction in nonPairedFactionsTerror:
+        case "Fear":
+            # Fear doesn't have paired factions to remove
+            #globalListOfPairedFactions.remove(pairedFactionsFear)
+            for faction in nonPairedFactionsFear:
                 if faction in globalListOfNonPairedFactions:
                     globalListOfNonPairedFactions.remove(faction)
 
             expansionsNotAdded.append(inputDelete)
             expansionsAdded.remove(inputDelete)
-        case "Ice":
-            globalListOfPairedFactions.remove(pairedFactionsIce)
-            for faction in nonPairedFactionsIce:
+        case "Frost":
+            globalListOfPairedFactions.remove(pairedFactionsFrost)
+            for faction in nonPairedFactionsFrost:
                 if faction in globalListOfNonPairedFactions:
                     globalListOfNonPairedFactions.remove(faction)
 
@@ -303,127 +425,58 @@ printLogo()
 printSpace()
 print("Hello, welcome to Claim deck generator...")
 printSpace()
-printGeneralOptions()
 
-# FIX EVERY INPUT
-# Get the option from the input
-option = input(SELECT_OPTION_MESSAGE)
-printSpace()
-
-# Test if the user's input is available
-wrong = False
-while option not in ["1", "2", "3", "4"]:
-    option = input(WRONG_OPTION_MESSAGE)
-    wrong = True
-# If the option was valid, then convert it to int
-option = int(option)
-if wrong:
-    printSpace()
+# Print select options, and take the selected option from the user's input
+deploySelectOptionsAndTakeInput()
 
 # While the user doesn't quit(4)
 while option != 4:
 
     # Get a random deck
+
+    # Exceptional executions
+    # You can't play without at least 2 paired factions
     if option == 1 and not globalListOfPairedFactions:
         print("Please add any expansion with paired factions to play...")
         printSpace()
-    if option == 1 and globalListOfPairedFactions:
-        numberOfPlayers = input("How many players are going to play? ")
+    # You can't play with less than 3 factions
+    if option == 1 and len(globalListOfNonPairedFactions) < 3:
+        print("Please add at least 3 non-paired factions to play...")
         printSpace()
 
-        # Test if the user's input is available
-        wrong = False
-        while numberOfPlayers not in ["2", "3", "4"]:
-            numberOfPlayers = input("Wrong number of players, please enter 2, 3 or 4: ")
-            wrong = True
-        # If the numberOfPlayers were valid, then convert it to int
-        numberOfPlayers = int(numberOfPlayers)
-        if wrong:
+    # Normal execution
+    if option == 1 and globalListOfPairedFactions and len(globalListOfNonPairedFactions) >= 3:
+        # Ask the user how many players are going to play
+        takeNumberOfPlayersInput()
+
+        # Number of players execution exception
+        # If the number of players is 3 or 4 and the global non-paired list have less than 5 factions, you can't play
+        if numberOfPlayers in [3, 4] and len(globalListOfNonPairedFactions) < 5:
+            print(f"Please add at least 5 non-paired factions to play with {numberOfPlayers} players...")
             printSpace()
 
-        # Depending on how many players, you will play with 8 factions(3-4 players) or 5 factions(2 players)
-        numbersOfFactions = 3
-
-        if numberOfPlayers == 2:
-            print(
-                "You will have to prepare a deck with 2 paired factions(for example goblins and knights) and add 3 not paired factions")
+        # Continue normal execution
         else:
-            print(
-                "You will have to prepare a deck with 2 paired factions(for example goblins and knights) and add 5 not paired factions")
-            numbersOfFactions = 5
-
-        # We are going to select 2 paired factions
-        random.shuffle(globalListOfPairedFactions)
-        pairedGenerated = random.choice(globalListOfPairedFactions)
-
-        # Then we are going to select 3 or 5 non-paired factions to build our deck
-        random.shuffle(globalListOfNonPairedFactions)
-        nonPairedGenerated = random.sample(globalListOfNonPairedFactions, numbersOfFactions)
-
-        print(f"Your randomly generated deck for {numberOfPlayers} players is composed by: ")
-        print(f"- {pairedGenerated}")
-        if len(nonPairedGenerated) > 1:
-            print("- " + ", ".join(nonPairedGenerated[:-1]) + " and " + nonPairedGenerated[-1])
-        else:
-            print(nonPairedGenerated[0])
-        printSpace()
+            # Depending on how many players, you will play with 8 factions(3-4 players) or 5 factions(2 players)
+            chooseNumberOfFactions()
+            # Choose decks randomly and shows to the user
+            generateRandomDeck()
 
     # Choose between add and remove and expansion
     elif option == 2:
         # Organise de possible options
-        printAddDeleteOptions()
-        optionAddDelete = input(SELECT_OPTION_MESSAGE)
-        printSpace()
-
-        # Test if the user's input is available
-        wrong = False
-        while optionAddDelete not in ["1", "2", "3", "4", "5"]:
-            optionAddDelete = input("Wrong option, please enter 1, 2, 3, 4 or 5: ")
-            wrong = True
-        # If the input was valid, then convert it to int
-        optionAddDelete = int(optionAddDelete)
-        if wrong:
-            printSpace()
+        # Print add/delete options, and take the add/delete option from the user's input
+        delployAddDeleteOptionsAndTakeInput()
 
         while optionAddDelete != 5:
 
             # Add an expansion
             if optionAddDelete == 1:
-
-                # The List.isEmpty of python
-                if not expansionsNotAdded:
-                    print("All expansions were already added")
-                else:
-                    print("Available expansions: ")
-                    for expansion in expansionsNotAdded:
-                        print(f"- {expansion}")
-                    inputAdd = input("Type the name: ")
-
-                    while inputAdd not in expansionsNotAdded:
-                        inputAdd = input("Wrong input, type an available expansion: ")
-
-                    # Add the expansion
-                    addAnExpansion(inputAdd)
-                    print(f" {inputAdd} was successfully added...")
+                addExpansionInput()
 
             # Delete an expansion
             elif optionAddDelete == 2:
-
-                # The List.isEmpty of python
-                if not expansionsAdded:
-                    print("You didn't added any faction")
-                else:
-                    print("Actual expansions: ")
-                    for expansion in expansionsAdded:
-                        print(f"- {expansion}")
-                    inputDelete = input("Type the name: ")
-
-                    while inputDelete not in expansionsAdded:
-                        inputDelete = input("Wrong input, type an added expansion: ")
-
-                    # Remove the expansion
-                    removeAnExpansion(inputDelete)
-                    print(f" {inputDelete} was successfully removed...")
+                removeExpansionInput()
 
             # Clean all the expansions selected
             elif optionAddDelete == 3:
@@ -436,43 +489,22 @@ while option != 4:
 
             # Repeat the add/delete options
             printSpace()
-            printAddDeleteOptions()
-            optionAddDelete = input(SELECT_OPTION_MESSAGE)
-            printSpace()
-
-            # Test if the user's input is available
-            wrong = False
-            while optionAddDelete not in ["1", "2", "3", "4", "5"]:
-                optionAddDelete = input("Wrong option, please enter 1, 2, 3, 4 or 5: ")
-                wrong = True
-            # If the input was valid, then convert it to int
-            optionAddDelete = int(optionAddDelete)
-            if wrong:
-                printSpace()
+            # Print add/delete options, and take the add/delete option from the user's input
+            delployAddDeleteOptionsAndTakeInput()
 
     # Show the actual expansions added to your deck
     elif option == 3:
         showExpansionsAndFactions()
 
-    # Repeat the options
-    printGeneralOptions()
-    option = input(SELECT_OPTION_MESSAGE)
-    printSpace()
-
-    # Test if the user's input is available
-    wrong = False
-    while option not in ["1", "2", "3", "4"]:
-        option = input(WRONG_OPTION_MESSAGE)
-        wrong = True
-    # If the option was valid, then convert it to int
-    option = int(option)
-    if wrong:
-        printSpace()
+    # Repeat the general options
+    # Print select options, and take the selected option from the user's input
+    deploySelectOptionsAndTakeInput()
 
 # End the program
-print("Good bye, thanks for using the randomizer <3, see you :)")
-# Wait 4 seconds to show the message
-time.sleep(4)
+print("Good bye, thanks for using the randomizer <3, see you! :)")
+# Wait 3 seconds to show the message
+time.sleep(3)
 
 
 
+ 
