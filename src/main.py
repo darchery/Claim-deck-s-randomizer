@@ -1,5 +1,6 @@
 # Libraries
 import random
+import time
 
 # Claims and expansions factions
 # Claim I
@@ -44,7 +45,7 @@ nonPairedFactionsFire = ["Demons", "Fire elementals", "Poisoners", "Tricksters"]
 
 # Constants and global variables
 SELECT_OPTION_MESSAGE = "Select an option: "
-WRONG_OPTION_MESSAGE = "Wrong option, please enter 1,2 or 3: "
+WRONG_OPTION_MESSAGE = "Wrong option, please enter 1, 2, 3 or 4: "
 
 # List with the factions
 globalListOfPairedFactions = []
@@ -87,6 +88,7 @@ def showExpansionsAndFactions():
         print("Non-paired factions: ")
         for index, faction in enumerate(globalListOfNonPairedFactions, start=1):
             print(f" {index}. {faction}")
+    printSpace()
 
 def cleanPool():
     global globalListOfPairedFactions, globalListOfNonPairedFactions, expansionsNotAdded, expansionsAdded
@@ -303,12 +305,20 @@ print("Hello, welcome to Claim deck generator...")
 printSpace()
 printGeneralOptions()
 
+# FIX EVERY INPUT
 # Get the option from the input
-option = int(input(SELECT_OPTION_MESSAGE))
+option = input(SELECT_OPTION_MESSAGE)
+printSpace()
 
 # Test if the user's input is available
-while option not in [1, 2, 3, 4]:
-    option = int(input(WRONG_OPTION_MESSAGE))
+wrong = False
+while option not in ["1", "2", "3", "4"]:
+    option = input(WRONG_OPTION_MESSAGE)
+    wrong = True
+# If the option was valid, then convert it to int
+option = int(option)
+if wrong:
+    printSpace()
 
 # While the user doesn't quit(4)
 while option != 4:
@@ -316,13 +326,20 @@ while option != 4:
     # Get a random deck
     if option == 1 and not globalListOfPairedFactions:
         print("Please add any expansion with paired factions to play...")
-    if option == 1 and globalListOfPairedFactions:
         printSpace()
-        numberOfPlayers = int(input("How many players are going to play? "))
+    if option == 1 and globalListOfPairedFactions:
+        numberOfPlayers = input("How many players are going to play? ")
+        printSpace()
 
         # Test if the user's input is available
-        while numberOfPlayers not in [2, 3, 4]:
-            numberOfPlayers = int(input("Wrong number of players, please enter 2,3 or 4: "))
+        wrong = False
+        while numberOfPlayers not in ["2", "3", "4"]:
+            numberOfPlayers = input("Wrong number of players, please enter 2, 3 or 4: ")
+            wrong = True
+        # If the numberOfPlayers were valid, then convert it to int
+        numberOfPlayers = int(numberOfPlayers)
+        if wrong:
+            printSpace()
 
         # Depending on how many players, you will play with 8 factions(3-4 players) or 5 factions(2 players)
         numbersOfFactions = 3
@@ -349,27 +366,33 @@ while option != 4:
             print("- " + ", ".join(nonPairedGenerated[:-1]) + " and " + nonPairedGenerated[-1])
         else:
             print(nonPairedGenerated[0])
+        printSpace()
 
     # Choose between add and remove and expansion
     elif option == 2:
         # Organise de possible options
-        printSpace()
         printAddDeleteOptions()
-        optionAddDelete = int(input(SELECT_OPTION_MESSAGE))
+        optionAddDelete = input(SELECT_OPTION_MESSAGE)
+        printSpace()
 
         # Test if the user's input is available
-        while optionAddDelete not in [1, 2, 3, 4, 5]:
-            optionAddDelete = int(input(WRONG_OPTION_MESSAGE))
+        wrong = False
+        while optionAddDelete not in ["1", "2", "3", "4", "5"]:
+            optionAddDelete = input("Wrong option, please enter 1, 2, 3, 4 or 5: ")
+            wrong = True
+        # If the input was valid, then convert it to int
+        optionAddDelete = int(optionAddDelete)
+        if wrong:
+            printSpace()
 
         while optionAddDelete != 5:
 
             # Add an expansion
             if optionAddDelete == 1:
 
-                printSpace()
                 # The List.isEmpty of python
                 if not expansionsNotAdded:
-                    print("All expansions were added")
+                    print("All expansions were already added")
                 else:
                     print("Available expansions: ")
                     for expansion in expansionsNotAdded:
@@ -381,12 +404,11 @@ while option != 4:
 
                     # Add the expansion
                     addAnExpansion(inputAdd)
-                    print(f" {inputAdd} was succesfully added...")
+                    print(f" {inputAdd} was successfully added...")
 
             # Delete an expansion
             elif optionAddDelete == 2:
 
-                printSpace()
                 # The List.isEmpty of python
                 if not expansionsAdded:
                     print("You didn't added any faction")
@@ -401,7 +423,7 @@ while option != 4:
 
                     # Remove the expansion
                     removeAnExpansion(inputDelete)
-                    print(f" {inputDelete} was succesfully removed...")
+                    print(f" {inputDelete} was successfully removed...")
 
             # Clean all the expansions selected
             elif optionAddDelete == 3:
@@ -415,28 +437,42 @@ while option != 4:
             # Repeat the add/delete options
             printSpace()
             printAddDeleteOptions()
-            optionAddDelete = int(input(SELECT_OPTION_MESSAGE))
+            optionAddDelete = input(SELECT_OPTION_MESSAGE)
+            printSpace()
 
-        # Test if the user's input is available
-        while optionAddDelete not in [1, 2, 3, 4, 5]:
-            optionAddDelete = int(input(WRONG_OPTION_MESSAGE))
+            # Test if the user's input is available
+            wrong = False
+            while optionAddDelete not in ["1", "2", "3", "4", "5"]:
+                optionAddDelete = input("Wrong option, please enter 1, 2, 3, 4 or 5: ")
+                wrong = True
+            # If the input was valid, then convert it to int
+            optionAddDelete = int(optionAddDelete)
+            if wrong:
+                printSpace()
 
     # Show the actual expansions added to your deck
     elif option == 3:
         showExpansionsAndFactions()
 
     # Repeat the options
-    printSpace()
     printGeneralOptions()
-    option = int(input(SELECT_OPTION_MESSAGE))
+    option = input(SELECT_OPTION_MESSAGE)
+    printSpace()
 
     # Test if the user's input is available
-    while option not in [1, 2, 3, 4]:
-        option = int(input(WRONG_OPTION_MESSAGE))
+    wrong = False
+    while option not in ["1", "2", "3", "4"]:
+        option = input(WRONG_OPTION_MESSAGE)
+        wrong = True
+    # If the option was valid, then convert it to int
+    option = int(option)
+    if wrong:
+        printSpace()
 
 # End the program
 print("Good bye, thanks for using the randomizer <3, see you :)")
-
+# Wait 4 seconds to show the message
+time.sleep(4)
 
 
 
