@@ -1,121 +1,137 @@
-# Claim deck's randomizer
-A console interface program which creates random decks for the card game called Claim  
-Link to the distributor: <http://playsdgames.com/coleccion/claim/>
+# Claim Deck Generator
+
+A console interface program which creates random decks for the card game **Claim**.
+
+> 🔗 [Official Claim distributor](http://playsdgames.com/coleccion/claim/)
 
 ---
 
-# Code documentation - Random deck generator for Claim
+## Requirements
 
-## General description
-
-This script allows generating a random faction deck for a card game called Claim. Players can add and remove expansions, view selected expansions, and generate a deck based on chosen options.
-
----
-
-## Libraries used
-
-- `random`: To randomly select factions.
-- `time`: To handle execution pauses and delays.
+- Python 3.10 or higher (the program uses `match/case` statements)
+- No external libraries needed — only Python's standard library
 
 ---
 
-## Faction definitions
+## Installation
 
-### Claims and expansions
+### Windows
 
-#### Claim I
+1. Download and install Python from [python.org](https://www.python.org/downloads/)
+   - During installation, check **"Add Python to PATH"**
+2. Download or clone this repository:
+   ```
+   git clone https://github.com/darchery/Claim-deck-s-randomizer.git
+   ```
+3. Open **Command Prompt** and navigate to the project folder:
+   ```
+   cd path\to\Claim-deck-s-randomizer
+   ```
 
-- **Paired Factions**: `Goblins and Knights`
-- **Unpaired Factions**: `Doppelgangers`, `Dwarves`, `Undeads`
+### macOS
 
-#### Claim II
+1. Install Python via [python.org](https://www.python.org/downloads/) or Homebrew:
+   ```
+   brew install python
+   ```
+2. Clone the repository:
+   ```
+   git clone https://github.com/darchery/Claim-deck-s-randomizer.git
+   ```
+3. Open **Terminal** and navigate to the project folder:
+   ```
+   cd path/to/Claim-deck-s-randomizer
+   ```
 
-- **Paired Factions**: `Giants and Gnomes`
-- **Unpaired Factions**: `Dragons`, `Seers`, `Trolls`
+### Linux
 
-#### Claim V (V Anniversary Edition)
-
-- **Paired Factions**: `Royalty and Peasants`
-- **Unpaired Factions**: `Automatons`, `Bards`, `Raccoons`, `Vikings`, `Griffins`
-
-### Thematic expansions
-
-#### Fear
-
-- **Unpaired Factions**: `Shadows`, `Vampires`, `Werewolves`, `Zombies`
-
-#### Frost
-
-- **Paired Factions**: `Ice Queen and King`
-- **Unpaired Factions**: `Yetis`, `Ice Beasts`
-
-#### Maps
-
-- **Paired Factions**: `Basilisks and Unicorns`
-- **Unpaired Factions**: `Phoenixes`
-
-#### Mercenaries
-
-- **Paired Factions**: `Orcs, Elves and Elves and Orcs`
-- **Unpaired Factions**: `Cyclops`
-
-#### Magic
-
-- **Unpaired Factions**: `Druids`, `Shape shifters`, `Wizards`
-
-#### Fire
-
-- **Unpaired Factions**: `Demons`, `Fire Elementals`, `Poisoners`, `Tricksters`
-
----
-
-## Global variables
-
-- `globalListOfPairedFactions`: List of selected paired factions.
-- `globalListOfNonPairedFactions`: List of selected unpaired factions.
-- `expansionsNotAdded`: List of available but not added expansions.
-- `expansionsAdded`: List of expansions added by the user.
+1. Install Python (most distros include it by default):
+   ```
+   sudo apt install python3      # Ubuntu/Debian
+   sudo dnf install python3      # Fedora
+   sudo pacman -S python         # Arch
+   ```
+2. Clone the repository:
+   ```
+   git clone https://github.com/darchery/Claim-deck-s-randomizer.git
+   ```
+3. Open a terminal and navigate to the project folder:
+   ```
+   cd path/to/Claim-deck-s-randomizer
+   ```
 
 ---
 
-## Main functions
+## Running the program
 
-### **Menu and user input**
+From inside the `src/EN_version/` folder:
 
-- `printGeneralOptions()`: Displays the main menu options.
-- `printAddDeleteOptions()`: Displays the expansion management options.
-- `deploySelectOptionsAndTakeInput()`: Captures user selection in the main menu.
-- `delployAddDeleteOptionsAndTakeInput()`: Captures user selection in the expansion management menu.
-- `takeNumberOfPlayersInput()`: Requests the number of players and validates input.
+```
+cd src/EN_version
+python main.py
+```
 
-### **Expansion manager**
+Or from the project root:
 
-- `showExpansionsAndFactions()`: Displays selected expansions and their factions.
-- `cleanPool()`: Resets the expansion and faction lists.
-- `addAllExpansionsToPool()`: Adds all available expansions.
-- `addEveryFaction()`: Adds each faction from all available expansions.
-- `addExpansionInput()`: Prompts the user to add an expansion.
-- `removeExpansionInput()`: Prompts the user to remove an expansion.
-- `addAnExpansion(inputAdd)`: Adds an expansion to the faction lists.
-- `removeAnExpansion(inputDelete)`: Removes an expansion from the faction lists.
-
-### **Deck generation**
-
-- `chooseNumberOfFactions()`: Determines the number of factions in the deck based on the number of players.
-- `generateRandomDeck()`: Generates a random deck based on selected factions.
-
-### **Utilities**
-
-- `printSpace()`: Prints a line break for better formatting.
-- `goodByeMessage()`: Displays a farewell message and waits a few seconds.
-- `printLogo()`: Displays a decorative ASCII logo.
+```
+python src/EN_version/main.py
+```
 
 ---
 
-## Program flow
+## How to use
 
-1. The options menu is displayed to the user.
-2. The user selects between adding/removing expansions, showing added expansions, or generating a random deck.
-3. If deck generation is selected, the number of players is requested.
-4. Paired and unpaired factions are randomly selected according to established rules.
-5. The generated deck is printed.
+When you launch the program, you will see the main menu:
+
+```
+Available menu options:
+1. Generate a random deck
+2. Organise your actual expansions
+3. Show your selected expansions
+4. Exit
+```
+
+### Step 1 — Add your expansions (option 2)
+
+Before generating a deck, you need to add the expansions you own. Select option `2` to open the expansion manager:
+
+```
+Organisation options:
+1. Add an expansion
+2. Remove an expansion
+3. Clean all the expansions selected
+4. Add all the available expansions
+5. Back
+```
+
+- **Add an expansion (1):** Shows the list of available expansions and asks you to type the name of the one you want to add.
+- **Remove an expansion (2):** Shows your current expansions and lets you remove one.
+- **Clean all (3):** Removes all expansions from the current pool.
+- **Add all (4):** Adds every available expansion at once.
+- **Back (5):** Returns to the main menu.
+
+Available expansions: `Claim I`, `Claim II`, `Claim V`, `Fear`, `Frost`, `Maps`, `Mercenaries`, `Magic`, `Fire`
+
+> ⚠️ You need at least **1 paired faction** and **3 non-paired factions** to generate a deck. With 3 or 4 players you need at least **5 non-paired factions**.
+
+### Step 2 — Check your pool (option 3)
+
+Use option `3` to see which expansions and factions are currently selected before generating.
+
+### Step 3 — Generate a deck (option 1)
+
+Select option `1` and enter the number of players (`2`, `3` or `4`). The program will randomly generate a deck:
+
+- **2 players:** 1 paired faction + 3 non-paired factions (5 total)
+- **3–4 players:** 1 paired faction + 5 non-paired factions (7 total)
+
+Example output:
+```
+Your randomly generated deck for 2 players is composed by:
+- Goblins and Knights
+- Dwarves, Undeads and Dragons
+```
+
+### Step 4 — Exit (option 4)
+
+Select option `4` to close the program.

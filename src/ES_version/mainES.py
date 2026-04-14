@@ -1,6 +1,6 @@
 # Librerías
 # Mi propia librería con las funciones, variables y constantes
-from src.ES_version import functions_variables_constantsES
+import functions_variables_constantsES
 
 # Imprimir el logo
 functions_variables_constantsES.printLogo()
