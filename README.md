@@ -17,6 +17,17 @@ A console interface program which creates random decks for the card game **Claim
 
 ### Windows
 
+**Option A — Installer (recommended)**
+
+For Windows users, ready-to-use installers are available in the `installer/` folder. No Python installation required.
+
+- `EN_version_installer.exe` — English version
+- `ES_version_installer.exe` — Spanish version
+
+Just double-click the `.exe` for your preferred language and follow the on-screen steps.
+
+**Option B — Manual installation**
+
 1. Download and install Python from [python.org](https://www.python.org/downloads/)
    - During installation, check **"Add Python to PATH"**
 2. Download or clone this repository:

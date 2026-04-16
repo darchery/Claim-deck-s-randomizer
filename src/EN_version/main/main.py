@@ -1,6 +1,6 @@
 # Libraries
 # My own library with the functions, variables and constants
-import functions_variables_constants
+import EN_version.main.functions_variables_constants as functions_variables_constants
 
 # Print the logo
 functions_variables_constants.printLogo()
