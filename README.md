@@ -75,17 +75,23 @@ Just double-click the `.exe` for your preferred language and follow the on-scree
 
 ## Running the program
 
-From inside the `src/EN_version/` folder:
+From inside the `src/EN_version/main/` folder:
 
 ```
-cd src/EN_version
+cd src/EN_version/main
 python main.py
 ```
 
 Or from the project root:
 
 ```
-python src/EN_version/main.py
+python src/EN_version/main/main.py
+```
+
+The same applies for the Spanish version:
+
+```
+python src/ES_version/main/main.py
 ```
 
 ---

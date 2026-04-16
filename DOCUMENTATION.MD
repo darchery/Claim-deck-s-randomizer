@@ -11,12 +11,22 @@ This script generates a random faction deck for the card game Claim. Players can
 ```
 Claim-deck-s-randomizer/
 ├── src/
-│   └── EN_version/
-│       ├── main.py
-│       └── functions_variables_constants.py
+│   ├── EN_version/
+│   │   ├── main/
+│   │   │   ├── main.py
+│   │   │   └── functions_variables_constants.py
+│   │   └── test/
+│   │       └── test.py
+│   └── ES_version/
+│       ├── main/
+│       │   ├── main.py
+│       │   └── functions_variables_constants.py
+│       └── test/
+│           └── test.py
 ├── installer/
 ├── resources/
-└── README.md
+├── README.md
+└── DOCUMENTATION.MD
 ```
 
 ---
@@ -181,3 +191,86 @@ Start
   goodByeMessage()
 End
 ```
+
+---
+
+## Unit tests
+
+The project includes comprehensive unit tests located in `src/EN_version/test/test.py` (for EN version) and `src/ES_version/test/test.py` (for ES version).
+
+### Running the tests
+
+```bash
+# From EN version test folder
+cd src/EN_version/test && python test.py
+
+# From ES version test folder
+cd src/ES_version/test && python test.py
+```
+
+### Test coverage
+
+The tests cover all major functions and edge cases:
+
+| Test class | Tests | Description |
+|------------|-------|-------------|
+| `TestCleanPool` | 5 | Verifies pool cleanup resets all lists correctly |
+| `TestAddAnExpansion` | 26 | Tests adding each of the 9 expansions with their factions |
+| `TestRemoveAnExpansion` | 11 | Tests removing expansions and faction cleanup |
+| `TestAddAllExpansionsToPool` | 5 | Verifies adding all expansions at once |
+| `TestChooseNumberOfFactions` | 3 | Tests faction count based on player count |
+| `TestGenerateRandomDeck` | 3 | Tests deck generation doesn't modify global lists |
+| `TestDeploySelectOptionsAndTakeInput` | 3 | Tests main menu input validation |
+| `TestDelployAddDeleteOptionsAndTakeInput` | 2 | Tests expansion manager menu input |
+| `TestTakeNumberOfPlayersInput` | 4 | Tests player count input validation |
+| `TestEdgeCases` | 7 | Tests error handling and edge cases |
+
+**Total: 63 tests per version**
+
+### Test functions
+
+#### cleanPool
+
+- `test_clean_pool_empties_paired_factions`
+- `test_clean_pool_empties_non_paired_factions`
+- `test_clean_pool_resets_expansions_not_added`
+- `test_clean_pool_empties_expansions_added`
+- `test_clean_pool_restores_all_nine_expansions`
+
+#### addAnExpansion
+
+For each expansion (Claim I, Claim II, Claim V, Fear, Frost, Maps, Mercenaries, Magic, Fire):
+- `test_add_<expansion>_adds_paired_faction` (where applicable)
+- `test_add_<expansion>_adds_non_paired_factions` (or single faction)
+- `test_add_<expansion>_moves_to_added_list`
+
+#### removeAnExpansion
+
+For each expansion:
+- `test_remove_<expansion>_removes_paired_faction` (where applicable)
+- `test_remove_<expansion>_removes_non_paired_factions`
+- `test_remove_<expansion>_moves_back_to_not_added`
+
+Plus cross-expansion tests:
+- `test_add_and_remove_does_not_change_other_expansions`
+
+#### Edge cases tested
+
+- Adding the same expansion twice raises `ValueError`
+- Removing an expansion not in the pool raises `ValueError`
+- Clean pool after add all resets correctly
+- Expansions added list tracks correctly
+- Expansions without paired factions (Fear, Magic, Fire) don't add to paired list
+
+### Test structure
+
+```python
+def reset_state():
+    """Helper to reset all global state between tests."""
+    fvc.globalListOfPairedFactions = []
+    fvc.globalListOfNonPairedFactions = []
+    fvc.expansionsNotAdded = [fvc.CLAIM_I, fvc.CLAIM_II, ...]
+    fvc.expansionsAdded = []
+```
+
+Each test class has a `setUp()` method that calls `reset_state()` to ensure test independence.

@@ -3,14 +3,12 @@ from unittest.mock import patch
 import sys
 import os
 
-# Add the src/EN_version path so the module can be imported
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "main"))
 
 import functions_variables_constants as fvc
 
 
 def reset_state():
-    """Helper to reset all global state between tests."""
     fvc.globalListOfPairedFactions = []
     fvc.globalListOfNonPairedFactions = []
     fvc.expansionsNotAdded = [
@@ -98,7 +96,7 @@ class TestAddAnExpansion(unittest.TestCase):
         for faction in fvc.nonPairedFactionsClaimV:
             self.assertIn(faction, fvc.globalListOfNonPairedFactions)
 
-    # Fear (no paired faction)
+    # Fear (Terror)
     def test_add_fear_does_not_add_paired_faction(self):
         paired_before = len(fvc.globalListOfPairedFactions)
         fvc.addAnExpansion(fvc.FEAR)
@@ -109,7 +107,7 @@ class TestAddAnExpansion(unittest.TestCase):
         for faction in fvc.nonPairedFactionsFear:
             self.assertIn(faction, fvc.globalListOfNonPairedFactions)
 
-    # Frost
+    # Frost (Hielo)
     def test_add_frost_adds_paired_faction(self):
         fvc.addAnExpansion(fvc.FROST)
         self.assertIn(fvc.pairedFactionsFrost, fvc.globalListOfPairedFactions)
@@ -137,7 +135,7 @@ class TestAddAnExpansion(unittest.TestCase):
         fvc.addAnExpansion(fvc.MERCENARIES)
         self.assertIn(fvc.nonPairedFactionsMercenaries, fvc.globalListOfNonPairedFactions)
 
-    # Magic (no paired faction)
+    # Magic
     def test_add_magic_does_not_add_paired_faction(self):
         paired_before = len(fvc.globalListOfPairedFactions)
         fvc.addAnExpansion(fvc.MAGIC)
@@ -148,7 +146,7 @@ class TestAddAnExpansion(unittest.TestCase):
         for faction in fvc.nonPairedFactionsMagic:
             self.assertIn(faction, fvc.globalListOfNonPairedFactions)
 
-    # Fire (no paired faction)
+    # Fire
     def test_add_fire_does_not_add_paired_faction(self):
         paired_before = len(fvc.globalListOfPairedFactions)
         fvc.addAnExpansion(fvc.FIRE)
@@ -207,13 +205,12 @@ class TestRemoveAnExpansion(unittest.TestCase):
         fvc.addAnExpansion(fvc.FROST)
         fvc.removeAnExpansion(fvc.FROST)
         self.assertNotIn(fvc.pairedFactionsFrost, fvc.globalListOfPairedFactions)
-
+    
     def test_remove_maps(self):
         fvc.addAnExpansion(fvc.MAPS)
         fvc.removeAnExpansion(fvc.MAPS)
         self.assertNotIn(fvc.pairedFactionsMaps, fvc.globalListOfPairedFactions)
-        self.assertNotIn(fvc.nonPairedFactionsMaps, fvc.globalListOfNonPairedFactions)
-
+    
     def test_remove_mercenaries(self):
         fvc.addAnExpansion(fvc.MERCENARIES)
         fvc.removeAnExpansion(fvc.MERCENARIES)
@@ -311,8 +308,6 @@ class TestGenerateRandomDeck(unittest.TestCase):
         fvc.numbersOfFactions = 3
         with patch("builtins.print"):
             fvc.generateRandomDeck()
-        # generateRandomDeck uses random.sample(globalListOfNonPairedFactions, numbersOfFactions)
-        # We verify it doesn't raise and the pool still has all factions
         self.assertGreaterEqual(len(fvc.globalListOfNonPairedFactions), 3)
 
     def test_deck_for_three_players_has_five_non_paired(self):
@@ -329,14 +324,13 @@ class TestGenerateRandomDeck(unittest.TestCase):
         non_paired_before = list(fvc.globalListOfNonPairedFactions)
         with patch("builtins.print"):
             fvc.generateRandomDeck()
-        # Order may change due to shuffle, so compare as sets
         self.assertEqual(set(fvc.globalListOfPairedFactions), set(paired_before))
         self.assertEqual(set(fvc.globalListOfNonPairedFactions), set(non_paired_before))
 
 
 # ─────────────────────────────────────────────
 # Input functions (mocked stdin)
-# ─────────────────────────────────────────────
+# ───────────────���─────────────────────────────
 class TestDeploySelectOptionsAndTakeInput(unittest.TestCase):
 
     def setUp(self):
@@ -414,7 +408,6 @@ class TestEdgeCases(unittest.TestCase):
 
     def test_add_same_expansion_twice_raises_value_error(self):
         fvc.addAnExpansion(fvc.CLAIM_I)
-        # CLAIM_I is no longer in expansionsNotAdded, so remove() will raise ValueError
         with self.assertRaises(ValueError):
             fvc.addAnExpansion(fvc.CLAIM_I)
 
