@@ -1,5 +1,8 @@
 # Claim Deck Generator
 
+![Tests](https://github.com/darchery/Claim-deck-s-randomizer/actions/workflows/tests.yml/badge.svg)
+
+
 A console interface program which creates random decks for the card game **Claim**.
 
 > 🔗 [Official Claim distributor](http://playsdgames.com/coleccion/claim/)
