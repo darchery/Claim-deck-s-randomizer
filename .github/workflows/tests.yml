@@ -20,4 +20,4 @@ jobs:
           python-version: '3.x'
 
       - name: Ejecutar tests
-        run: python src/EN_VERSION/test/tests.py -v
+        run: python src/EN_VERSION/test/test.py -v
