@@ -1,7 +1,14 @@
 # Claim Deck Generator
 
+## Project status
+ 
 ![Tests](https://github.com/darchery/Claim-deck-s-randomizer/actions/workflows/tests.yml/badge.svg)
-
+![Python](https://img.shields.io/badge/python-3.10+-blue?logo=python)
+![License](https://img.shields.io/github/license/darchery/Claim-deck-s-randomizer)
+![Last Commit](https://img.shields.io/github/last-commit/darchery/Claim-deck-s-randomizer)
+![Repo Size](https://img.shields.io/github/repo-size/darchery/Claim-deck-s-randomizer)
+ 
+---
 
 A console interface program which creates random decks for the card game **Claim**.
 
