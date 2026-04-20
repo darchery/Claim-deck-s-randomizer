@@ -20,4 +20,4 @@ jobs:
           python-version: '3.x'
 
       - name: Ejecutar tests
-        run: python -m unittest discover -s src -p "tests.py" -v
+        run: python src/EN_VERSION/test/tests.py -v
